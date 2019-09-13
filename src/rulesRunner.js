@@ -7,7 +7,13 @@ function doRunRules(engine, formData, schema, uiSchema, extraActions = {}) {
   let uiSchemaCopy = deepcopy(uiSchema);
   let formDataCopy = deepcopy(formData);
 
-  let res = engine.run(formData).then(events => {
+  // Exclude undefined values as they are note valid facts
+  const formDataSanitized = deepcopy(formData);
+  Object.keys(formDataSanitized).forEach(
+    key => formDataSanitized[key] === undefined && delete formDataSanitized[key]
+  );
+
+  let res = engine.run(formDataSanitized).then(({ events }) => {
     events.forEach(event =>
       execute(event, schemaCopy, uiSchemaCopy, formDataCopy, extraActions)
     );
@@ -36,9 +42,11 @@ export default function rulesRunner(
   uiSchema,
   rules,
   engine,
+  engineOptions,
   extraActions
 ) {
-  engine = typeof engine === "function" ? new engine([], schema) : engine;
+  engine =
+    typeof engine === "function" ? new engine([], engineOptions) : engine;
   normRules(rules).forEach(rule => engine.addRule(rule));
 
   return formData => {

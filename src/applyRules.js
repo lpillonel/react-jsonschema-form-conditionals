@@ -64,20 +64,30 @@ export default function applyRules(
       constructor(props) {
         super(props);
 
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
         this.updateConf = this.updateConf.bind(this);
         let { formData = {} } = this.props;
 
+        this.runRules = rulesRunner(
+          this.props.schema,
+          this.props.uiSchema,
+          rules,
+          Engine,
+          extraActions
+        );
+
         this.shouldUpdate = false;
-        this.state = { schema, uiSchema };
-        this.updateConf(formData);
+        this.state = { schema: {}, uiSchema: {} };
+
+        this.updateConf({ entity: formData });
       }
 
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) {
         let formDataChanged =
-          nextProps.formData && !deepEquals(nextProps.formData, this.formData);
+          nextProps.formData &&
+          !deepEquals({ entity: nextProps.formData }, this.formData);
         if (formDataChanged) {
-          this.updateConf(nextProps.formData);
+          this.updateConf({ entity: nextProps.formData });
           this.shouldUpdate = true;
         } else {
           this.shouldUpdate =
@@ -91,14 +101,8 @@ export default function applyRules(
 
       updateConf(formData) {
         this.formData = formData;
-        const runRules = rulesRunner(
-          this.state.schema,
-          this.state.uiSchema,
-          rules,
-          Engine,
-          extraActions
-        );
-        return runRules(formData).then(conf => {
+
+        return this.runRules(formData).then(conf => {
           let dataChanged = !deepEquals(this.formData, conf.formData);
           this.formData = conf.formData;
 
@@ -113,18 +117,20 @@ export default function applyRules(
         });
       }
 
-      handleChange(change) {
-        let { formData } = change;
-        let updTask = this.updateConf(formData);
+      // handleChange(change) {
+      //   console.log("apply handleChange", change);
 
-        let { onChange } = this.props;
-        if (onChange) {
-          updTask.then(conf => {
-            let updChange = Object.assign({}, change, conf);
-            onChange(updChange);
-          });
-        }
-      }
+      //   let { formData } = change;
+      //   let updTask = this.updateConf(formData);
+
+      //   let { onChange } = this.props;
+      //   if (onChange) {
+      //     updTask.then(conf => {
+      //       let updChange = Object.assign({}, change, conf);
+      //       onChange(updChange);
+      //     });
+      //   }
+      // }
 
       shouldComponentUpdate() {
         if (this.shouldUpdate) {
@@ -135,10 +141,13 @@ export default function applyRules(
       }
 
       render() {
+        const { schema, uiSchema, ...props } = this.props;
+
         // Assignment order is important
-        let formConf = Object.assign({}, this.props, this.state, {
-          onChange: this.handleChange,
-          formData: this.formData,
+        let formConf = Object.assign({}, props, this.state, {
+          //onChange: this.handleChange,
+          //formData: this.formData,
+          ref: this.props.innerRef,
         });
         return <FormComponent {...formConf} />;
       }
