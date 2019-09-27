@@ -4,7 +4,7 @@
     "Extension of react-jsonschema-form with conditional field support",
   "private": false,
   "author": "mavarazy@gmail.com",
-  "version": "0.3.20",
+  "version": "0.4.0",
   "scripts": {
     "build:lib":
       "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
@@ -45,13 +45,14 @@
     "node": ">=8"
   },
   "peerDependencies": {
+    "json-rules-engine": "^4.0.0",
     "prop-types": "^15.5.10",
     "react": "^16.0.0",
-    "react-jsonschema-form": "^1.0.0",
-    "json-rules-engine": "^4.0.0"
+    "react-jsonschema-form": "^1.0.0"
   },
   "dependencies": {
     "deepcopy": "^2.0.0",
+    "lodash.unset": "^4.5.2",
     "selectn": "^1.1.2"
   },
   "devDependencies": {
