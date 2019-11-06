@@ -4,7 +4,7 @@
     "Extension of react-jsonschema-form with conditional field support",
   "private": false,
   "author": "mavarazy@gmail.com",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "scripts": {
     "build:lib":
       "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
