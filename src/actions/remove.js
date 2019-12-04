@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import get from "lodash.get";
 import unset from "lodash.unset";
 import { toArray, findRelSchemaAndField, findRelUiSchema } from "../utils";
 import { validateFields } from "./validateAction";
@@ -17,7 +18,12 @@ function doRemove({ field, schema }, uiSchema, formData) {
     uiSchema["ui:order"].splice(fieldIndex, 1);
   }
 
-  unset(formData.entity, field);
+  // Check if data to remove is an empty object
+  // @TODO change this once we have react-jsonschema-form 2.0
+  const existingData = get(formData.entity, field);
+  if (typeof existingData != "object" || Object.keys(existingData).length) {
+    unset(formData.entity, field);
+  }
 }
 
 /**

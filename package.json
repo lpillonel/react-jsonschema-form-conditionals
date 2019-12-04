@@ -1,21 +1,15 @@
 {
   "name": "@lpi/react-jsonschema-form-conditionals",
-  "description":
-    "Extension of react-jsonschema-form with conditional field support",
+  "description": "Extension of react-jsonschema-form with conditional field support",
   "private": false,
   "author": "mavarazy@gmail.com",
   "version": "0.4.1",
   "scripts": {
-    "build:lib":
-      "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
-    "build:dist":
-      "rimraf dist && cross-env NODE_ENV=production webpack --config webpack.config.dist.js --optimize-minimize",
-    "build:playground":
-      "rimraf build && cross-env NODE_ENV=production webpack --config webpack.config.prod.js --optimize-minimize && cp playground/index.prod.html build/index.html",
-    "cs-check":
-      "prettier -l $npm_package_prettierOptions '{playground,src,test}/**/*.js'",
-    "cs-format":
-      "prettier $npm_package_prettierOptions '{playground,src,test}/**/*.js' --write",
+    "build:lib": "rimraf lib && cross-env NODE_ENV=production babel -d lib/ src/",
+    "build:dist": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack.config.dist.js --optimize-minimize",
+    "build:playground": "rimraf build && cross-env NODE_ENV=production webpack --config webpack.config.prod.js --optimize-minimize && cp playground/index.prod.html build/index.html",
+    "cs-check": "prettier -l $npm_package_prettierOptions '{playground,src,test}/**/*.js'",
+    "cs-format": "prettier $npm_package_prettierOptions '{playground,src,test}/**/*.js' --write",
     "dist": "npm run build:lib && npm run build:dist",
     "lint": "eslint src test playground",
     "precommit": "lint-staged",
@@ -28,7 +22,9 @@
   "jest": {
     "verbose": true,
     "collectCoverage": true,
-    "collectCoverageFrom": ["src/**/*.{js,jsx}"]
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ]
   },
   "prettierOptions": "--jsx-bracket-same-line --trailing-comma es5 --semi",
   "lint-staged": {
@@ -39,7 +35,10 @@
     ]
   },
   "main": "lib/index.js",
-  "files": ["dist", "lib"],
+  "files": [
+    "dist",
+    "lib"
+  ],
   "engineStrict": false,
   "engines": {
     "node": ">=8"
@@ -52,6 +51,7 @@
   },
   "dependencies": {
     "deepcopy": "^2.0.0",
+    "lodash.get": "^4.4.2",
     "lodash.unset": "^4.5.2",
     "selectn": "^1.1.2"
   },
@@ -113,8 +113,13 @@
     "type": "git",
     "url": "git+https://github.com/RxNT/react-jsonschema-form-conditionals.git"
   },
-  "keywords": ["react", "form", "json-schema", "conditional", "predicate"],
+  "keywords": [
+    "react",
+    "form",
+    "json-schema",
+    "conditional",
+    "predicate"
+  ],
   "license": "Apache-2.0",
-  "homepage":
-    "https://github.com/RxNT/react-jsonschema-form-conditionals#readme"
+  "homepage": "https://github.com/RxNT/react-jsonschema-form-conditionals#readme"
 }
