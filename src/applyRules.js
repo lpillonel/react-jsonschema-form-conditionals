@@ -16,7 +16,7 @@ export default function applyRules(
 ) {
   if (isDevelopment()) {
     const propTypes = {
-      Engine: PropTypes.func.isRequired,
+      Engine: PropTypes.object.isRequired,
       rules: PropTypes.arrayOf(
         PropTypes.shape({
           conditions: PropTypes.object.isRequired,
