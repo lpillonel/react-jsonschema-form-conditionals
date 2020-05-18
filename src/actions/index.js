@@ -19,6 +19,10 @@ export default function execute(
   formData,
   extraActions = {}
 ) {
-  let action = extraActions[type] ? extraActions[type] : DEFAULT_ACTIONS[type];
-  action(params, schema, uiSchema, formData);
+  const action = extraActions[type]
+    ? extraActions[type]
+    : DEFAULT_ACTIONS[type];
+  const { entity, ...extraData } = formData;
+
+  action(params, schema, uiSchema, entity, extraData);
 }
