@@ -10,11 +10,12 @@ function doRunRules(engine, formData, schema, uiSchema, extraActions = {}) {
   // Exclude undefined values as they are note valid facts
   const formDataSanitized = deepcopy(formData);
   Object.keys(formDataSanitized).forEach(
-    key => formDataSanitized[key] === undefined && delete formDataSanitized[key]
+    (key) =>
+      formDataSanitized[key] === undefined && delete formDataSanitized[key]
   );
 
   let res = engine.run(formDataSanitized).then(({ events }) => {
-    events.forEach(event =>
+    events.forEach((event) =>
       execute(event, schemaCopy, uiSchemaCopy, formDataCopy, extraActions)
     );
   });
@@ -42,36 +43,29 @@ export default function rulesRunner(
   uiSchema,
   rules,
   engine,
-  engineOptions,
   extraActions
 ) {
-  engine =
-    typeof engine === "function" ? new engine([], engineOptions) : engine;
-  normRules(rules).forEach(rule => engine.addRule(rule));
+  normRules(rules).forEach((rule) => engine.addRule(rule));
 
-  return formData => {
+  return (formData) => {
     if (formData === undefined || formData === null) {
       return Promise.resolve({ schema, uiSchema, formData });
     }
 
-    return doRunRules(
-      engine,
-      formData,
-      schema,
-      uiSchema,
-      extraActions
-    ).then(conf => {
-      if (deepEquals(conf.formData, formData)) {
-        return conf;
-      } else {
-        return doRunRules(
-          engine,
-          conf.formData,
-          schema,
-          uiSchema,
-          extraActions
-        );
+    return doRunRules(engine, formData, schema, uiSchema, extraActions).then(
+      (conf) => {
+        if (deepEquals(conf.formData, formData)) {
+          return conf;
+        } else {
+          return doRunRules(
+            engine,
+            conf.formData,
+            schema,
+            uiSchema,
+            extraActions
+          );
+        }
       }
-    });
+    );
   };
 }

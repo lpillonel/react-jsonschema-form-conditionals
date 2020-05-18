@@ -16,8 +16,7 @@ export default function applyRules(
 ) {
   if (isDevelopment()) {
     const propTypes = {
-      Engine: PropTypes.oneOfType([PropTypes.func, PropTypes.object])
-        .isRequired,
+      Engine: PropTypes.func.isRequired,
       rules: PropTypes.arrayOf(
         PropTypes.shape({
           conditions: PropTypes.object.isRequired,
@@ -62,7 +61,7 @@ export default function applyRules(
 
   const runRules = rulesRunner(schema, uiSchema, rules, Engine, extraActions);
 
-  return FormComponent => {
+  return (FormComponent) => {
     class FormWithConditionals extends Component {
       constructor(props) {
         super(props);
@@ -97,7 +96,7 @@ export default function applyRules(
       updateConf(formData) {
         this.formData = formData;
 
-        return runRules(formData).then(conf => {
+        return runRules(formData).then((conf) => {
           let dataChanged = !deepEquals(this.formData, conf.formData);
           this.formData = conf.formData;
 
