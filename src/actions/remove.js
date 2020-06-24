@@ -20,9 +20,9 @@ function doRemove({ field, schema }, uiSchema, formData) {
 
   // Check if data to remove is an empty object
   // @TODO change this once we have react-jsonschema-form 2.0
-  const existingData = get(formData.entity, field);
+  const existingData = get(formData, field);
   if (typeof existingData != "object" || Object.keys(existingData).length) {
-    unset(formData.entity, field);
+    unset(formData, field);
   }
 }
 
@@ -38,7 +38,7 @@ export default function remove(params, schema, uiSchema, formData) {
   const { field } = params;
 
   let fieldArr = toArray(field);
-  fieldArr.forEach(field => {
+  fieldArr.forEach((field) => {
     doRemove(
       findRelSchemaAndField(field, schema),
       findRelUiSchema(field, uiSchema),
